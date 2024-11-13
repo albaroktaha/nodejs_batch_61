@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import { DATABASE_URL } from "./env";
+import { DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD } from "./env";
 
 const connect = async () => {
   try {
-    await mongoose.connect(DATABASE_URL, {
-      autoIndex: true,
-      dbName: "sanber-be-57",
-      connectTimeoutMS: 10000,
+    const connectionUrl = `mongodb+srv://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_URL}`;
+    await mongoose.connect(connectionUrl, {
+      // autoIndex: true,
+      dbName: "cluster-wpu-course",
+      // connectTimeoutMS: 10000,
     });
     console.log("Database connected");
   } catch (error) {

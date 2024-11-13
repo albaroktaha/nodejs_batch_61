@@ -113,6 +113,25 @@ function init() {
         }
         res.json(filteredProducts);
     });
+    // Route GET dengan parameter kategori dan query string untuk nama produk
+    app.get('/products/:category', (req, res) => {
+        const { category } = req.params; // Menangkap kategori dari parameter
+        const { name } = req.query; // Menangkap nama dari query string
+        // Menyaring produk berdasarkan kategori, dengan pengecekan untuk kategori yang valid
+        let filteredProducts = products.filter(product => product.category && product.category.toLowerCase() === category.toLowerCase());
+        // Jika ada query parameter 'name', lakukan pencarian berdasarkan nama produk
+        if (name) {
+            // Pastikan 'name' adalah string dan lakukan pencarian
+            const searchName = name.toLocaleString();
+            filteredProducts = filteredProducts.filter(product => product.name && product.name.toLowerCase().includes(searchName));
+        }
+        // Jika tidak ada produk yang ditemukan, kirimkan respons 404
+        if (filteredProducts.length === 0) {
+            return res.status(404).json({ message: 'Produk tidak ditemukan' });
+        }
+        // Kirimkan hasil produk yang ditemukan
+        res.json(filteredProducts);
+    });
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
     });
