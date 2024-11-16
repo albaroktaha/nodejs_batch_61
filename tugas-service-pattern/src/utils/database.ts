@@ -2,12 +2,11 @@
 # src/utils/database.ts
 */
 import mongoose from "mongoose";
-import { DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD } from "./env";
+import { DATABASE_URL } from "./env";
 
 const connect = async () => {
-  try {
-    const connectionUrl = `mongodb+srv://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_URL}`;
-    await mongoose.connect(connectionUrl, {
+  try {    
+    await mongoose.connect(DATABASE_URL, {
       dbName: "cluster-wpu-course",
     });
     return "Database connected";
