@@ -1,27 +1,27 @@
-import express, { Request, Response } from "express";
-var fileUpload = require("express-fileupload");
+import express from "express";
+import routes from "./routes/api";
+import bodyParser from "body-parser";
 
 const PORT = 3000;
 
-function init() {
-  const app = express();
-  app.get("/", (req: Request, res: Response) => {
-    res.status(200).json({
-      message: "OK",
-      data: null,
+async function init() {
+  try {    
+
+    const app = express();
+
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use("/api", routes);
+
+    // http://localhost:3000/api
+
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
     });
-  });
-
-  app.use(
-    fileUpload({
-      useTempFiles: true,
-      tempFileDir: "/tmp/",
-    })
-  );
-
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 init();
