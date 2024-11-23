@@ -8,13 +8,15 @@ import productsController from "../controllers/products.controller";
 import categoriesController from "../controllers/categories.controller";
 import authController from "../controllers/auth.controller";
 import authMiddleware from "../middlewares/auth.middlewre";
+import rbacMiddleware from "../middlewares/rbac.middleware";
 
 const router = express.Router();
 
 // Auth
 router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
-router.post("/auth/me", authMiddleware, authController.me);
+// router.post("/auth/me", authMiddleware, authController.me);
+router.post("/auth/me", [authMiddleware, rbacMiddleware(["admin"])], authController.me);
 router.put("/auth/update-profile", authMiddleware, authController.profile);
 
 // CRUD Categories
